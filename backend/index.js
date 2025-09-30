@@ -1,14 +1,15 @@
-const connectToMongo = require("./db");
-const express = require("express");
+const connectToMongo = require("./db"); // get the connection function to connect to database
+const express = require("express"); // imoprt express for server
 
-connectToMongo();
-const app = express();
-const port = 3000;
+connectToMongo(); // function to connect to database
+const app = express(); // //creatinng express app
+const port = 3000; // port no
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World!"); // sends hello world response
 });
 
+//start the server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
