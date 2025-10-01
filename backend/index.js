@@ -5,9 +5,9 @@ connectToMongo(); // function to connect to database
 const app = express(); // //creatinng express app
 const port = 3000; // port no
 
-app.get("/", (req, res) => {
-  res.send("Hello World!"); // sends hello world response
-});
+//available routes
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/notes", require("./routes/notes"));
 
 //start the server
 app.listen(port, () => {
