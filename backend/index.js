@@ -5,6 +5,8 @@ connectToMongo(); // function to connect to database
 const app = express(); // //creatinng express app
 const port = 3000; // port no
 
+app.use(express.json()); //json middleware
+
 //available routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/notes", require("./routes/notes"));

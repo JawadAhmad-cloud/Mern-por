@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose; // set the schema function to create a schema
 
 const UserSchema = new Schema({
   name: {
@@ -16,7 +17,7 @@ const UserSchema = new Schema({
   },
   date: {
     type: Date,
-    default: date.now,
+    default: Date.now,
   },
 });
 

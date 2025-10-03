@@ -14,10 +14,11 @@ const connectToMongo = async () => {
   try {
     // Try connecting to MongoDB using mongoose.connect
     // The options (useNewUrlParser, useUnifiedTopology) ensure compatibility with newer MongoDB drivers
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true, // Use new MongoDB connection string parser
-      useUnifiedTopology: true, // Use the new Server Discover and Monitoring engine
-    });
+    // await mongoose.connect(mongoURI, {
+    //   useNewUrlParser: true, // Use new MongoDB connection string parser
+    //   useUnifiedTopology: true, // Use the new Server Discover and Monitoring engine
+    // });
+    await mongoose.connect(mongoURI);
 
     // If connection succeeds, log success message
     console.log("✅ Connected to MongoDB Successfully");
