@@ -21,5 +21,5 @@ const UserSchema = new Schema({
   },
 });
 const User = mongoose.model("user", UserSchema);
-User.createIndexes(); //to aviod dublicate values
+// User.createIndexes(); //to aviod dublicate values
 module.exports = User;

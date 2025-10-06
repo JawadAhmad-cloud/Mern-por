@@ -3,7 +3,7 @@ const express = require("express"); // imoprt express for server
 
 connectToMongo(); // function to connect to database
 const app = express(); // //creatinng express app
-const port = 3000; // port no
+const port = 5000; // port no
 
 app.use(express.json()); //json middleware
 
