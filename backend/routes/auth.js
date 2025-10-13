@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/User"); //get the user model to save correct user data acording to schema
 const router = express.Router(); //used to create route which will be used in the main index.js
 const { body, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs"); //to hash the password
 
 //create a user using : POST "/api/auth/createuser" dosen't require auth
 router.post(
@@ -26,11 +27,16 @@ router.post(
           .status(400)
           .json({ error: "Sorry a user with this email already exists" });
       }
+
+      const salt = await bcrypt.genSalt(10); //generating salt for hashing
+      secPass = await bcrypt.hash(req.body.password, salt); //hashing the password with salt
+
+      //create a new user
       user = await User.create({
         //to create a uuser in mongodb
         name: req.body.name, // getting the data from the request
         email: req.body.email,
-        password: req.body.password,
+        password: secPass,
       });
       // .then((user) => res.json(user)) //for check purpose sending the user data back
       // .catch((err) => {
