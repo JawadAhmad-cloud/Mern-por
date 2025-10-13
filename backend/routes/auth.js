@@ -3,6 +3,9 @@ const User = require("../models/User"); //get the user model to save correct use
 const router = express.Router(); //used to create route which will be used in the main index.js
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs"); //to hash the password
+const jwt = require("jsonwebtoken"); //to generate the jwt token
+
+const JWT_SECRET = "jawadisagoodboy"; //secret key to sign the jwt token
 
 //create a user using : POST "/api/auth/createuser" dosen't require auth
 router.post(
@@ -38,17 +41,16 @@ router.post(
         email: req.body.email,
         password: secPass,
       });
-      // .then((user) => res.json(user)) //for check purpose sending the user data back
-      // .catch((err) => {
-      //   //catching the error
-      //   console.log(err);
-      //   res.json({
-      //     //sending the error message
-      //     error: "PLease enter a unique value fro email",
-      //     message: err.message,
-      //   });
-      //});
-      res.json(user); //sending the user data back
+
+      const data = {
+        user: {
+          id: user.id, //storing the user id in the data variable
+        },
+      };
+
+      const authToken = jwt.sign(data, JWT_SECRET); //generating the jwt token
+
+      res.json(authToken); //sending the token as response
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Some error occured"); //internal server error
