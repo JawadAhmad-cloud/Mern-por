@@ -4,10 +4,11 @@ const router = express.Router(); //used to create route which will be used in th
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs"); //to hash the password
 const jwt = require("jsonwebtoken"); //to generate the jwt token
+const fetchuser = require("../middleware/fetchuser"); //to get the user from the jwt token
 
 const JWT_SECRET = "jawadisagoodboy"; //secret key to sign the jwt token
 
-//create a user using : POST "/api/auth/createuser" dosen't require auth
+//Route1: create a user using : POST "/api/auth/createuser" dosen't require auth
 router.post(
   "/createuser",
   [
@@ -58,7 +59,7 @@ router.post(
   }
 );
 
-//authenticate a user /api/auth/login
+//Route2: authenticate a user /api/auth/login
 router.post(
   "/login",
   [
@@ -104,4 +105,15 @@ router.post(
   }
 );
 
+//Route3: Get logged in user details using: POST "/api/auth/getuser" login required
+router.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    userId = req.user.id; //getting the user id from the req object which is added by the fetchuser middleware
+    const user = await User.findById(userId).select("-password"); //selecting all the fields except the password
+    res.send(user); //sending the user as response
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal server error"); //internal server error
+  }
+});
 module.exports = router;
