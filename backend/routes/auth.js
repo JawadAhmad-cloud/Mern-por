@@ -50,10 +50,56 @@ router.post(
 
       const authToken = jwt.sign(data, JWT_SECRET); //generating the jwt token
 
-      res.json(authToken); //sending the token as response
+      res.json({ authToken }); //sending the token as response
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Some error occured"); //internal server error
+    }
+  }
+);
+
+//authenticate a user /api/auth/login
+router.post(
+  "/login",
+  [
+    body("email", "Enter a valid Email").isEmail(),
+    body("password", "Password cannot be blank").exists(), //to validate the email
+  ],
+  async (req, res) => {
+    //if there are errors return bad request
+    const errors = validationResult(req); //using validator to get the error
+    if (!errors.isEmpty()) {
+      //checking if the error array is empty if it is not empty then we return the error
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body; //destructuring the email and password from the request body
+    try {
+      let user = await User.findOne({ email }); //finding the user with the email
+      if (!user) {
+        return res
+          .status(400)
+          .json({ error: "Please try to login with correct credentials" });
+      }
+
+      const passwordCompare = await bcrypt.compare(password, user.password); //comparing the password with the hashed password
+      if (!passwordCompare) {
+        return res
+          .status(400)
+          .json({ error: "Please try to login with correct credentials" });
+      }
+
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(data, JWT_SECRET); //generating the jwt token
+
+      res.json({ authToken }); //sending the token as response
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send("Internal server error"); //internal server error
     }
   }
 );
