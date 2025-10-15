@@ -1,10 +1,10 @@
 const express = require("express");
 const User = require("../models/User"); //get the user model to save correct user data acording to schema
 const router = express.Router(); //used to create route which will be used in the main index.js
-const { body, validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator"); // to validate the user input
 const bcrypt = require("bcryptjs"); //to hash the password
-const jwt = require("jsonwebtoken"); //to generate the jwt token
-const fetchuser = require("../middleware/fetchuser"); //to get the user from the jwt token
+var jwt = require("jsonwebtoken"); //to generate the jwt token
+var fetchuser = require("../middleware/fetchuser"); //to get the user from the jwt token
 
 const JWT_SECRET = "jawadisagoodboy"; //secret key to sign the jwt token
 
