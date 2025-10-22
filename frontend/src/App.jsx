@@ -17,13 +17,15 @@ const App = () => {
         <Router>
           {/* Navigation bar component */}
           <Navbar />
-          {/* Routes container for different pages */}
-          <Routes>
-            {/* Home page route */}
-            <Route path="/" element={<Home />} />
-            {/* About page route */}
-            <Route path="/about" element={<About />} />
-          </Routes>
+          <div className="container">
+            {/* Routes container for different pages */}
+            <Routes>
+              {/* Home page route */}
+              <Route path="/" element={<Home />} />
+              {/* About page route */}
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </div>
         </Router>
       </NoteState>
     </>
