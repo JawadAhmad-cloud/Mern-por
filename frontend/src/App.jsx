@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import About from "./components/About";
 // Import the NoteState context provider
 import NoteState from "./context/notes/NoteState";
+import Alert from "./components/Alert";
 
 // Main App component
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Router>
           {/* Navigation bar component */}
           <Navbar />
+          <Alert message="this is a good course" />
           <div className="container">
             {/* Routes container for different pages */}
             <Routes>
