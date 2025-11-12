@@ -44,7 +44,11 @@ const NoteState = (props) => {
     setNotes(notes.concat(note));
   };
   //delete a note
-  const deleteNote = () => {};
+  const deleteNote = (id) => {
+    //todo:api call
+    const newNotes = notes.filter((note) => note._id !== id);
+    setNotes(newNotes);
+  };
   //edit a note
   const editNote = () => {};
 
