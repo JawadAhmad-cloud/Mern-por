@@ -7,7 +7,7 @@ const Addnote = () => {
   const [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "default",
+    tag: "",
   });
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
@@ -16,6 +16,7 @@ const Addnote = () => {
   const HandleClick = (e) => {
     e.preventDefault();
     addNote(note);
+    setNote({ title: "", description: "", tag: "" });
   };
   return (
     <div>
@@ -29,6 +30,7 @@ const Addnote = () => {
             <input
               type="text"
               className="form-control"
+              value={note.title}
               id="title"
               name="title"
               aria-describedby="emailHelp"
@@ -41,6 +43,7 @@ const Addnote = () => {
             </label>
             <input
               type="text"
+              value={note.description}
               className="form-control"
               id="description"
               name="description"
@@ -53,6 +56,7 @@ const Addnote = () => {
             </label>
             <input
               type="text"
+              value={note.tag}
               className="form-control"
               id="tag"
               name="tag"
