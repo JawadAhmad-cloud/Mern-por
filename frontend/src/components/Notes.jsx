@@ -16,6 +16,8 @@ const Notes = () => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
+    // getNotes is stable (memoized in NoteState), so it's safe to include
+    // it in the dependency array — this calls getNotes once on mount.
     getNotes();
   }, [getNotes]);
 

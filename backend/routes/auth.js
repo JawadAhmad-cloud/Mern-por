@@ -6,7 +6,8 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var fetchuser = require("../middleware/fetchuser");
 
-const JWT_SECRET = "jawadisagoodboy";
+// Read JWT secret from environment (set in backend/.env) with a safe fallback
+const JWT_SECRET = process.env.JWT_SECRET || "jawadisagoodboy";
 
 //Route1: create a user using : POST "/api/auth/createuser"
 router.post(
@@ -25,12 +26,10 @@ router.post(
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "Sorry a user with this email already exists",
-          });
+        return res.status(400).json({
+          success,
+          error: "Sorry a user with this email already exists",
+        });
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -48,7 +47,7 @@ router.post(
         },
       };
 
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: "1h" });
       success = true;
       res.json({ success, authToken });
     } catch (error) {
@@ -76,12 +75,10 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (!user) {
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "Please try to login with correct credentials",
-          });
+        return res.status(400).json({
+          success,
+          error: "Please try to login with correct credentials",
+        });
       }
 
       const passwordCompare = await bcrypt.compare(password, user.password);
@@ -97,7 +94,7 @@ router.post(
           id: user.id,
         },
       };
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: "1h" });
       success = true;
       res.json({ success, authToken });
     } catch (error) {

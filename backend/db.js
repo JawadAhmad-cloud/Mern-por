@@ -25,9 +25,9 @@ const connectToMongo = async () => {
   } catch (error) {
     // If connection fails, catch the error and log it
     console.error("❌ MongoDB connection error:", error.message);
-
-    // Exit the process with a failure code (1 = failure)
-    process.exit(1);
+    // Do not exit the process here so the server can start and return
+    // helpful error responses instead of crashing the whole app.
+    // In production you may want to retry connecting or fail fast.
   }
 };
 

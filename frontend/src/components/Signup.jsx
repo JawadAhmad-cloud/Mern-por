@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AlertContext from "../context/alert/AlertContext";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +9,9 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate();
   const [error, setError] = useState("");
+  const { showAlert } = useContext(AlertContext);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,9 +54,12 @@ const Signup = () => {
       if (data.success) {
         localStorage.setItem("token", data.authToken);
         setFormData({ name: "", email: "", password: "", confirmPassword: "" }); // Clear form data
+        showAlert("Account created successfully", "success");
         navigate("/");
       } else {
-        setError(data.message || "Invalid credentials");
+        const msg = data.error || data.message || "Invalid credentials";
+        showAlert(msg, "danger");
+        setError(msg);
       }
     } catch (err) {
       setError(err.message);

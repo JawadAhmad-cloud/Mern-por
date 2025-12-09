@@ -1,7 +1,24 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  let location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
+
+  useEffect(() => {
+    // Re-evaluate authentication whenever the route changes (login/signup/navigation)
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -44,14 +61,27 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <Link to="/login" className="btn btn-primary mx-2" role="button">
-                Login
-              </Link>
-              <Link to="/signup" className="btn btn-primary mx-2" role="button">
-                Sign up
-              </Link>
-            </form>
+
+            <div className="d-flex">
+              {!isAuthenticated ? (
+                <>
+                  <Link to="/login" className="btn btn-outline-light mx-2">
+                    Login
+                  </Link>
+                  <Link to="/signup" className="btn btn-outline-light mx-2">
+                    Sign up
+                  </Link>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-danger mx-2"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </nav>

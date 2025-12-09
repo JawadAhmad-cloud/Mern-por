@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AlertContext from "../context/alert/AlertContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,9 +22,10 @@ const Login = () => {
     if (json.success) {
       // Save the auth token and redirect
       localStorage.setItem("token", json.authToken);
+      showAlert("Logged in successfully", "success");
       navigate("/"); // Use navigate instead of history.push
     } else {
-      alert("Invalid credentials");
+      showAlert(json.error || "Invalid credentials", "danger");
     }
   };
 

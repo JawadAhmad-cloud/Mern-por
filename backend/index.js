@@ -1,3 +1,5 @@
+// Load environment variables from .env
+require("dotenv").config();
 const connectToMongo = require("./db"); // get the connection function to connect to database
 const express = require("express"); // imoprt express for server
 var cors = require("cors"); //importing cors to avoid cors error
